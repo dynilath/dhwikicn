@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "es2015"],
+    "module": "es2015",
+    "moduleResolution": "node",
+    "declaration": false,
+    "noEmit": true,
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "globals.d.ts",
+    "./node_modules/types-mediawiki",
+    "./node_modules/@types/leaflet/index.d.ts",
+    "./node_modules/@types/leaflet-contextmenu/index.d.ts",
+    "./node_modules/leaflet-easybutton/src/easy-button.d.ts"
+  ],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+}

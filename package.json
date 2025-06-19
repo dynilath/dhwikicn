@@ -1,0 +1,39 @@
+{
+  "name": "dhwikicn",
+  "version": "1.0.0",
+  "description": "Script collection for daggerheart cn wiki",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm run version && pnpm run build:prod",
+    "dev": "rollup -c -w",
+    "version": "node ./script/auto-semver.cjs",
+    "build:prod": "cross-env NODE_ENV=production rollup -c",
+    "build:dev": "rollup -c",
+    "build:all": "cross-env NODE_ENV=production BUILD_TARGET=all rollup -c",
+    "build:leaflet": "cross-env NODE_ENV=production BUILD_TARGET=leaflet rollup -c",
+    "type-check": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "http-server -p 14001 -c-1 -o"
+  },
+  "keywords": [],
+  "author": "Da'Inihlus<dynilath@qq.com>",
+  "license": "MIT",
+  "packageManager": "pnpm@10.12.1",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/node": "^24.0.1",
+    "cross-env": "^7.0.3",
+    "html-to-image": "^1.11.13",
+    "http-server": "^14.1.1",
+    "rollup": "^4.21.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "tslib": "^2.8.1",
+    "types-mediawiki": "^1.10.1",
+    "typescript": "^5.8.3"
+  }
+}
