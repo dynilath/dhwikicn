@@ -18,6 +18,35 @@ const downloadButtonStyle = `
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 `;
 
+const waterMarkElement = (()=>{
+  const ret = document.createElement('span');
+  // 在底部居中，透明，没有背景色
+  ret.style.cssText = `
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 6px;
+    background-color: transparent;
+    z-index: 9999;
+  `;
+
+  const img = document.createElement('img');
+  img.src = 'https://av.huijiwiki.com/site_avatar_daggerheart_l.png?1750202551';
+  img.style.width = '8px';
+  img.style.height = '8px';
+  img.style.opacity = '0.5';
+  ret.appendChild(img);
+
+  const text = document.createElement('span');
+  text.innerText = '匕首之心中文维基';
+  ret.appendChild(text);
+
+  return ret;
+})();
+
 /**
  * 初始化 dh-card 元素的下载功能
  * @param {HTMLElement} element - 要初始化的 dh-card 元素
@@ -50,13 +79,16 @@ function initDHCardDownloadFor (element: HTMLElement) {
     try {
       downloadBtn.style.display = 'none';
 
+      element.appendChild(waterMarkElement);
+
       // 使用 html-to-image 转换为 PNG
       const dataUrl = await toPng(element, {
         quality: 1.0,
         pixelRatio: 2,
-        backgroundColor: '#ffffff',
+        backgroundColor: 'transparent',
       });
 
+      waterMarkElement.remove();
       downloadBtn.style.display = 'block';
 
       const link = document.createElement('a');
