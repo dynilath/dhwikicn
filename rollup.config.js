@@ -4,8 +4,8 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import babel from "@rollup/plugin-babel";
 import terser from "@rollup/plugin-terser";
-import replace from "@rollup/plugin-replace";
 import copy from "rollup-plugin-copy";
+import postcss from "rollup-plugin-postcss";
 import fs from "fs";
 import { createBanner } from "./script/banner.js";
 
@@ -26,6 +26,9 @@ const mainConfig = {
   },
   external: ["L", "mediaWiki", "jQuery"],
   plugins: [
+    postcss({
+      minimize: true,
+    }),
     nodeResolve({
       browser: true,
       preferBuiltins: false,
@@ -34,7 +37,7 @@ const mainConfig = {
     typescript({
       declaration: false,
       noEmit: false,
-      target: "es2015", // 先编译到ES2015，再用Babel转换为ES5
+      target: "es2015",
     }),
     babel({
       babelHelpers: "bundled",

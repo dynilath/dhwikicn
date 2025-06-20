@@ -1,43 +1,15 @@
 import { toPng } from 'html-to-image';
+import './styles.css';
 
-// 创建下载按钮的样式
-const downloadButtonStyle = `
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: white;
-  color: black;
-  border: none;
-  border-radius: 4px;
-  padding: 6px 10px;
-  cursor: pointer;
-  font-size: 12px;
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-`;
+// 存储按钮与卡片的映射关系
+const cardButtonMap = new WeakMap();
 
 const waterMarkElement = (()=>{
   const ret = document.createElement('span');
-  // 在底部居中，透明，没有背景色
-  ret.style.cssText = `
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    color: rgba(0, 0, 0, 0.5);
-    font-size: 6px;
-    background-color: transparent;
-    z-index: 9999;
-  `;
+  ret.className = 'dh-card-watermark';
 
   const img = document.createElement('img');
   img.src = 'https://av.huijiwiki.com/site_avatar_daggerheart_l.png?1750202551';
-  img.style.width = '8px';
-  img.style.height = '8px';
-  img.style.opacity = '0.5';
   ret.appendChild(img);
 
   const text = document.createElement('span');
@@ -51,18 +23,19 @@ const waterMarkElement = (()=>{
  * 初始化 dh-card 元素的下载功能
  * @param {HTMLElement} element - 要初始化的 dh-card 元素
  */
-function initDHCardDownloadFor (element: HTMLElement) {
+function initSingleDhCard(element: HTMLElement) {
+  // 检查是否已经有下载按钮
+  if (cardButtonMap.has(element)) {
+    return;
+  }
+
   console.log('初始化 dh-card 下载功能:', element);
   const name = (element.getElementsByClassName('dh-card-name')[0] as HTMLElement)?.innerText || `dh-card-${Date.now()}`;
 
-  if (getComputedStyle(element).position === 'static') {
-    element.style.position = 'relative';
-  }
-
+  // 创建下载按钮
   const downloadBtn = document.createElement('button');
   downloadBtn.innerHTML = '<i class="fa fa-download" aria-hidden="true"></i>';
   downloadBtn.title = '下载为图片';
-  downloadBtn.style.cssText = downloadButtonStyle;
   downloadBtn.className = 'dh-card-download-btn';
 
   element.appendChild(downloadBtn);
@@ -78,9 +51,7 @@ function initDHCardDownloadFor (element: HTMLElement) {
 
     try {
       downloadBtn.style.display = 'none';
-
       element.appendChild(waterMarkElement);
-
       // 使用 html-to-image 转换为 PNG
       const dataUrl = await toPng(element, {
         quality: 1.0,
@@ -89,7 +60,6 @@ function initDHCardDownloadFor (element: HTMLElement) {
       });
 
       waterMarkElement.remove();
-      downloadBtn.style.display = 'block';
 
       const link = document.createElement('a');
       link.download = `${name}.png`;
@@ -100,16 +70,16 @@ function initDHCardDownloadFor (element: HTMLElement) {
       document.body.removeChild(link);
     } catch (error) {
       console.error('下载图片时出错:', error);
-      downloadBtn.style.display = 'block';
+      alert('下载失败，请重试');
     }
   });
 }
 
 // 为 dh-card 元素添加下载功能
-function initDhCardDownload () {
+function initDhCardDownload() {
   const dhCards = document.getElementsByClassName('dh-card');
   for (let i = 0; i < dhCards.length; i++) {
-    initDHCardDownloadFor(dhCards[i] as HTMLElement);
+    initSingleDhCard(dhCards[i] as HTMLElement);
   }
 }
 
