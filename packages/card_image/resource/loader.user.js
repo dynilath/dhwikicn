@@ -13,7 +13,7 @@
 (function() {
     'use strict';
     const script = document.createElement('script');
-    script.src = `http://127.0.0.1:14001/download_image.js?v=${Date.now()}`;
+    script.src = `http://127.0.0.1:14001/__OUTPUT__?v=${Date.now()}`;
     script.onload = function() {
         script.remove(); // Remove the script element after loading
     };
