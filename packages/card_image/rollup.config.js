@@ -7,18 +7,24 @@ import terser from "@rollup/plugin-terser";
 import copy from "rollup-plugin-copy";
 import postcss from "rollup-plugin-postcss";
 import fs from "fs";
-import { createBanner } from "./script/banner.js";
+import { createBanner } from "../script/banner.js";
 
 const pkg = JSON.parse(fs.readFileSync("./package.json", "utf8"));
 
 const isProduction = process.env.NODE_ENV === "production";
 const buildTarget = process.env.BUILD_TARGET;
 
+// console.log(`path = ${__dirname}`);
+console.log(`path env = ${process.env.INIT_CWD}`);
+
+const destDir = `${process.env.INIT_CWD}/public`.replace(/\\/g, "/");
+const filename = `${pkg.name.replace(/-/g, "_")}.js`;
+
 // 主应用配置
 const mainConfig = {
   input: "src/index.ts",
   output: {
-    file: "public/card_image.js",
+    file: `${destDir}/${filename}`,
     format: "es",
     sourcemap: isProduction ? false : "inline",
     banner: `${createBanner(pkg.name, pkg.version, pkg.repository?.url || "")}\n// @preserve <nowiki>\n`,
@@ -45,7 +51,15 @@ const mainConfig = {
       presets: [["@babel/preset-env"]],
     }),
     copy({
-      targets: [{ src: "resource/*", dest: "public" }],
+      targets: [
+        {
+          src: "loader.user.js",
+          dest: destDir,
+          transform: (content) => {
+            return content.toString().replaceAll("__OUTPUT__", filename);
+          },
+        },
+      ],
     }),
     isProduction && terser(),
   ].filter(Boolean),
