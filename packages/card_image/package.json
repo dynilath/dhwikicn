@@ -1,6 +1,6 @@
 {
   "name": "card_image",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Card image generator for Daggerheart CN wiki",
   "main": "index.js",
   "type": "module",
