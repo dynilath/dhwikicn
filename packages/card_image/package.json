@@ -13,6 +13,10 @@
   "keywords": [],
   "author": "Da'Inihlus<dynilath@qq.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dynilath/dhwikicn.git"
+  },
   "packageManager": "pnpm@10.12.1",
   "devDependencies": {
     "@babel/core": "^7.27.4",
