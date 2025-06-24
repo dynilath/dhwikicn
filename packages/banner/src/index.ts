@@ -23,21 +23,6 @@ ${parallax ? 'background-attachment: fixed; background-position: top;' : ''}
   position: relative;
 }
 
-.dh-banner .dh-banner-content {
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: normal;
-  padding-inline-start: 5%;
-  padding-inline-end: 5%;
-}
-
-.dh-banner-content .dh-banner-inner {
-  position: relative;
-  width: 45%;
-  color: rgb(255, 255, 255);
-}
-
 .dh-banner::before {
   color: rgb(51,65,85);
   background-color: rgba(0, 0, 0, 0);
@@ -53,12 +38,6 @@ ${parallax ? 'background-attachment: fixed; background-position: top;' : ''}
 }
 
 @media (max-width: 768px) {
-  .dh-banner .dh-banner-content {
-    justify-content: flex-end;
-  }
-  .dh-banner-content .dh-banner-inner {
-    width: 100%;
-  }
   .dh-banner::before {
     background-image: linear-gradient(0deg, rgb(24, 47, 105) 30%, rgba(28, 8, 95, 0) 75%);
   }
@@ -91,7 +70,11 @@ function createBanner () {
   const bannerContainer = h(
     'div',
     { className: 'dh-banner' },
-    h('div', { className: 'dh-banner-content' }, h('div', { className: 'dh-banner-inner', innerHTML: innerHTML }))
+    h(
+      'div',
+      { classList: ['md:justify-normal', 'justify-end', 'self-center', 'flex', 'flex-col', 'ps-[5%]', 'pe-[5%]'] },
+      h('div', { classList: ['relative', 'md:w-[45%]', 'w-[100%]', 'text-white'], innerHTML: innerHTML })
+    )
   );
 
   infoElement.remove();
