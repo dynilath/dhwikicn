@@ -5,25 +5,25 @@ const defaultBannerSrc = 'https://huiji-public.huijistatic.com/daggerheart/uploa
 
 interface BannerOptions {
   src: string;
+  parallax: boolean;
 }
 
-function createBannerStyle ({ src }: BannerOptions) {
+function createBannerStyle ({ src, parallax }: BannerOptions) {
   const bannerStyle = document.createElement('style');
   bannerStyle.textContent = `
-.dh-parallax-banner {
+.dh-banner {
   background-image: url(${src});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-position-x: 50%;
-  background-position-y: 50%;
+${parallax ? 'background-attachment: fixed; background-position: top;' : ''}
   width: 100%;
-  padding-block-start: 12%;
-  padding-block-end: 9%;
+  padding-block-start: min(12%, 4em);
+  padding-block-end: min(9%, 3em);
   position: relative;
 }
 
-.dh-parallax-banner .dh-parallax-banner-content {
+.dh-banner .dh-banner-content {
   align-self: center;
   display: flex;
   flex-direction: column;
@@ -32,13 +32,13 @@ function createBannerStyle ({ src }: BannerOptions) {
   padding-inline-end: 5%;
 }
 
-.dh-parallax-banner-content .dh-parallax-banner-inner {
+.dh-banner-content .dh-banner-inner {
   position: relative;
   width: 45%;
   color: rgb(255, 255, 255);
 }
 
-.dh-parallax-banner::before {
+.dh-banner::before {
   color: rgb(51,65,85);
   background-color: rgba(0, 0, 0, 0);
   background-image: linear-gradient(90deg, rgb(24, 47, 105) 30%, rgba(28, 8, 95, 0) 70%);
@@ -53,13 +53,13 @@ function createBannerStyle ({ src }: BannerOptions) {
 }
 
 @media (max-width: 768px) {
-  .dh-parallax-banner .dh-parallax-banner-content {
+  .dh-banner .dh-banner-content {
     justify-content: flex-end;
   }
-  .dh-parallax-banner-content .dh-parallax-banner-inner {
+  .dh-banner-content .dh-banner-inner {
     width: 100%;
   }
-  .dh-parallax-banner::before {
+  .dh-banner::before {
     background-image: linear-gradient(0deg, rgb(24, 47, 105) 30%, rgba(28, 8, 95, 0) 75%);
   }
 }
@@ -70,7 +70,7 @@ function createBannerStyle ({ src }: BannerOptions) {
 function retriveBannerOptions (ele: HTMLElement): BannerOptions {
   const srcAttr = ele.getAttribute('data-banner-src');
   const src = (srcAttr && huijiImageURL(srcAttr)) || defaultBannerSrc;
-  return { src };
+  return { src, parallax: ele.getAttribute('data-banner-parallax') === 'true' };
 }
 
 function createBanner () {
@@ -90,12 +90,8 @@ function createBanner () {
 
   const bannerContainer = h(
     'div',
-    { className: 'dh-parallax-banner' },
-    h(
-      'div',
-      { className: 'dh-parallax-banner-content' },
-      h('div', { className: 'dh-parallax-banner-inner', innerHTML: innerHTML })
-    )
+    { className: 'dh-banner' },
+    h('div', { className: 'dh-banner-content' }, h('div', { className: 'dh-banner-inner', innerHTML: innerHTML }))
   );
 
   infoElement.remove();
