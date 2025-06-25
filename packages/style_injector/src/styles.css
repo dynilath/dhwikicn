@@ -1,0 +1,27 @@
+
+#wiki-outer-body {
+  background-image: url("https://huiji-public.huijistatic.com/daggerheart/uploads/1/19/48F4590CF3D85EACC0763DAC7C3570F7.jpg");
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+#wiki-outer-body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255, 0.4);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 确保主要内容在遮罩层之上 */
+#wiki-outer-body > * {
+  position: relative;
+  z-index: 1;
+}
